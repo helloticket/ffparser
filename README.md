@@ -23,14 +23,20 @@ type Pojo struct {
 func main() {
     ffp := ffparser.NewSimpleParser()
 
-	result, _ := parser.ParseToText(&Pojo{
-		Value1: time.Date(2017, 5, 10, 0, 0, 0, 0, time.UTC),
-		Value2: 12402,
-		Value3: 4567822222,
-		Value4: 4567833.22,
-		Value5: "be happy",
-	})
+    result, _ := parser.ParseToText(&Pojo{
+        Value1: time.Date(2017, 5, 10, 0, 0, 0, 0, time.UTC),
+        Value2: 12402,
+        Value3: 4567822222,
+        Value4: 4567833.22,
+        Value5: "be happy",
+    })
 
     log.Println(result)
 }
 ```
+
+
+## Inspired
+https://github.com/ffpojo/ffpojo
+
+
