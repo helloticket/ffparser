@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 
+	"time"
+
 	"github.com/helderfarias/ffparser/decorator"
 	"github.com/helderfarias/ffparser/helper"
 )
@@ -21,9 +23,11 @@ func NewSimpleParser() *FFParser {
 	instance.decorators["Default"] = &decorator.DefaultDecorator{}
 	instance.decorators["IntDecorator"] = &decorator.IntDecorator{}
 	instance.decorators["Int64Decorator"] = &decorator.Int64Decorator{}
+	instance.decorators["Float64Decorator"] = &decorator.Float64Decorator{}
 	instance.decorators["BrazilDateDecorator"] = &decorator.BrazilDateDecorator{}
 	instance.decorators["BrazilSmallDateDecorator"] = &decorator.BrazilSmallDateDecorator{}
 	instance.decorators["BrazilMoneyDecorator"] = &decorator.BrazilMoneyDecorator{}
+	instance.decorators["DateTimeDecorator"] = &decorator.DateTimeDecorator{}
 	return &instance
 }
 
@@ -37,12 +41,12 @@ func (f *FFParser) ParseToText(src interface{}) (string, error) {
 	recordsField, _ := f.handlerRecordFieldsAndSort(src, mapFields)
 
 	for _, record := range recordsField {
-		decorator, err := f.factoryDecorator(src, record)
+		content, err := GetField(src, record.FieldName)
 		if err != nil {
 			return "", err
 		}
 
-		content, err := GetField(src, record.FieldName)
+		decorator, err := f.factoryDecorator(content, record)
 		if err != nil {
 			return "", err
 		}
@@ -113,19 +117,25 @@ func (f *FFParser) factoryDecorator(obj interface{}, record RecordField) (decora
 		}
 	}
 
-	typeField, err := GetFieldKind(obj, record.FieldName)
-	if err != nil {
-		return nil, err
+	if record.FieldType == reflect.Int {
+		return f.decorators["IntDecorator"], nil
 	}
 
-	switch typeField {
-	case reflect.Int:
-		return f.decorators["IntDecorator"], nil
-	case reflect.Int64:
+	if record.FieldType == reflect.Int64 {
 		return f.decorators["Int64Decorator"], nil
-	default:
-		return f.decorators["Default"], nil
 	}
+
+	if record.FieldType == reflect.Float64 {
+		return f.decorators["Float64Decorator"], nil
+	}
+
+	if record.FieldType == reflect.Struct {
+		if _, ok := obj.(time.Time); ok {
+			return f.decorators["DateTimeDecorator"], nil
+		}
+	}
+
+	return f.decorators["Default"], nil
 }
 
 func (f *FFParser) handlerRecordFieldsAndSort(src interface{}, fields map[string]string) ([]RecordField, error) {

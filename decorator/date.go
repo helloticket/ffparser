@@ -10,6 +10,9 @@ const (
 	DDMMYYYYHHMMSS = "02/01/2006 15:04:05"
 )
 
+type DateTimeDecorator struct {
+}
+
 type BrazilDateDecorator struct {
 }
 
@@ -40,6 +43,21 @@ func (i *BrazilSmallDateDecorator) ToString(field interface{}) (string, error) {
 
 func (i *BrazilDateDecorator) FromString(field string) (interface{}, error) {
 	value, err := time.Parse(DDMMYY, field)
+	if err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
+func (i *DateTimeDecorator) ToString(field interface{}) (string, error) {
+	if value, ok := field.(time.Time); ok {
+		return value.Format(DDMMYYYYHHMMSS), nil
+	}
+	return "", nil
+}
+
+func (i *DateTimeDecorator) FromString(field string) (interface{}, error) {
+	value, err := time.Parse(DDMMYYYYHHMMSS, field)
 	if err != nil {
 		return nil, err
 	}
