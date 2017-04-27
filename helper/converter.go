@@ -23,3 +23,17 @@ func ToInteger(str string) int {
 
 	return value
 }
+
+func Float64ToString(v float64) string {
+	return strconv.FormatFloat(v, 'f', -1, 64)
+}
+
+func ToFloat64(str string) float64 {
+	value, err := strconv.ParseFloat(str, 64)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return value
+}

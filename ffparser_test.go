@@ -1,66 +1,104 @@
 package ffparser
 
 import (
-    "testing"
+	"testing"
+	"time"
 
-    "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 type TestPojo1 struct {
-    Name        string `record:"start=1,end=10"`
-    Address     string `record:"start=11,end=30"`
-    PhoneNumber string `record:"start=31,end=40"`
-    Other       string
+	Name        string `record:"start=1,end=10"`
+	Address     string `record:"start=11,end=30"`
+	PhoneNumber string `record:"start=31,end=40"`
+	Other       string
 }
 
 type TestPojo2 struct {
-    Name        string `record:"start=1,end=10,delimiter=*"`
-    Address     string `record:"start=11,end=30,padalign=left"`
-    PhoneNumber string `record:"start=31,end=50,delimiter=0,padalign=left"`
-    Other       string
+	Name        string `record:"start=1,end=10,padchar=*"`
+	Address     string `record:"start=11,end=30,padalign=left"`
+	PhoneNumber string `record:"start=31,end=50,padchar=0,padalign=left"`
+	Other       string
 }
 
 type TestDecorator1 struct {
-    NumInt   int   `record:"start=1,end=5,decorator=IntDecorator"`
-    NumInt64 int64 `record:"start=6,end=10,decorator=Int64Decorator"`
+	NumInt   int   `record:"start=1,end=5,decorator=IntDecorator"`
+	NumInt64 int64 `record:"start=6,end=10,decorator=Int64Decorator"`
 }
 
 func TestShouldParseTextToStruct(t *testing.T) {
-    parser := NewSimpleParser()
+	parser := NewSimpleParser()
 
-    var expectedResult TestPojo1
+	var expectedResult TestPojo1
 
-    err := parser.CreateFromText(&expectedResult, `name111111222222222222222222223333333333`)
+	err := parser.CreateFromText(&expectedResult, `name111111222222222222222222223333333333`)
 
-    assert.Nil(t, err)
-    assert.Equal(t, TestPojo1{Name: "name111111", Address: "22222222222222222222", PhoneNumber: "3333333333"}, expectedResult)
+	assert.Nil(t, err)
+	assert.Equal(t, TestPojo1{Name: "name111111", Address: "22222222222222222222", PhoneNumber: "3333333333"}, expectedResult)
 }
 
 func TestShouldParseTextToStructWithIntegerDecorator(t *testing.T) {
-    parser := NewSimpleParser()
+	parser := NewSimpleParser()
 
-    var expectedResult TestDecorator1
+	var expectedResult TestDecorator1
 
-    err := parser.CreateFromText(&expectedResult, "1111122222")
+	err := parser.CreateFromText(&expectedResult, "1111122222")
 
-    assert.Nil(t, err)
-    assert.Equal(t, TestDecorator1{NumInt: 11111, NumInt64: 22222}, expectedResult)
+	assert.Nil(t, err)
+	assert.Equal(t, TestDecorator1{NumInt: 11111, NumInt64: 22222}, expectedResult)
 }
 
 func TestShouldParseStructToText(t *testing.T) {
-    parser := NewSimpleParser()
+	parser := NewSimpleParser()
 
-    result, err := parser.ParseToText(&TestPojo1{Name: "name", Address: "Address", PhoneNumber: "PhoneNumber"})
+	result, err := parser.ParseToText(&TestPojo1{Name: "name", Address: "Address", PhoneNumber: "PhoneNumber"})
 
-    assert.Nil(t, err)
-    assert.Equal(t, "name      Address             PhoneNumbe", result)
+	assert.Nil(t, err)
+	assert.Equal(t, "name      Address             PhoneNumbe", result)
 }
 
-func TestShouldParseStructToTextWithDelimiter(t *testing.T) {
-    parser := NewSimpleParser()
+func TestShouldParseTextToStructWithBrazilDateDecorator(t *testing.T) {
+	parser := NewSimpleParser()
 
-    result, err := parser.ParseToText(&TestPojo2{Name: "name", Address: "Address", PhoneNumber: "8032342345"})
+	type DateStruct struct {
+		ValueDate time.Time `record:"start=1,end=10,decorator=BrazilDateDecorator"`
+	}
 
-    assert.Nil(t, err)
-    assert.Equal(t, "name******             Address00000000008032342345", result)
+	result, err := parser.ParseToText(&DateStruct{ValueDate: time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)})
+
+	assert.Nil(t, err)
+	assert.Equal(t, "01012017  ", result)
+}
+
+func TestShouldParseTextToStructWithBrazilSmallDateDecorator(t *testing.T) {
+	parser := NewSimpleParser()
+
+	type DateStruct struct {
+		ValueDate time.Time `record:"start=1,end=8,decorator=BrazilSmallDateDecorator"`
+	}
+
+	result, err := parser.ParseToText(&DateStruct{ValueDate: time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC)})
+
+	assert.Nil(t, err)
+	assert.Equal(t, "010117  ", result)
+}
+
+func TestShouldParseTextToStructWithMoneyDecorator(t *testing.T) {
+	parser := NewSimpleParser()
+
+	type MoneyStruct struct {
+		Value float64 `record:"start=1,end=12,decorator=BrazilMoneyDecorator"`
+	}
+
+	result1, _ := parser.ParseToText(&MoneyStruct{Value: 1.999})
+	result2, _ := parser.ParseToText(&MoneyStruct{Value: 10.999})
+	result3, _ := parser.ParseToText(&MoneyStruct{Value: 120.999})
+	result4, _ := parser.ParseToText(&MoneyStruct{Value: 1230.999})
+	result5, _ := parser.ParseToText(&MoneyStruct{Value: 5222230.999})
+
+	assert.Equal(t, "000000001999", result1)
+	assert.Equal(t, "000000010999", result2)
+	assert.Equal(t, "000000120999", result3)
+	assert.Equal(t, "000001230999", result4)
+	assert.Equal(t, "005222230999", result5)
 }
