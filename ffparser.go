@@ -117,7 +117,10 @@ func (f *FFParser) factoryDecorator(obj interface{}, record RecordField) (decora
 		}
 	}
 
-	if record.FieldType == reflect.Int {
+	if record.FieldType == reflect.Int ||
+		record.FieldType == reflect.Int8 ||
+		record.FieldType == reflect.Int16 ||
+		record.FieldType == reflect.Int32 {
 		return f.decorators["IntDecorator"], nil
 	}
 
@@ -125,7 +128,8 @@ func (f *FFParser) factoryDecorator(obj interface{}, record RecordField) (decora
 		return f.decorators["Int64Decorator"], nil
 	}
 
-	if record.FieldType == reflect.Float64 {
+	if record.FieldType == reflect.Float32 ||
+		record.FieldType == reflect.Float64 {
 		return f.decorators["Float64Decorator"], nil
 	}
 

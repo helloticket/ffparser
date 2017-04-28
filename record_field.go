@@ -41,10 +41,13 @@ func (r *RecordField) ApplyFormat(value string) (string, error) {
 }
 
 func (r *RecordField) isNumericField() bool {
-	switch r.FieldType {
-	case reflect.Int:
-	case reflect.Int64:
-	case reflect.Float64:
+	if reflect.Int == r.FieldType ||
+		reflect.Int16 == r.FieldType ||
+		reflect.Int32 == r.FieldType ||
+		reflect.Int8 == r.FieldType ||
+		reflect.Int64 == r.FieldType ||
+		reflect.Float32 == r.FieldType ||
+		reflect.Float64 == r.FieldType {
 		return true
 	}
 
