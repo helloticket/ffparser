@@ -1,3 +1,16 @@
+# ffparser
+
+The library is a Flat-File Parser
+
+## Install
+
+```bash
+go get -v github.com/helloticket/ffparser
+```
+
+## Using
+
+```go
 package main
 
 import (
@@ -174,3 +187,9 @@ func main() {
 	file.WriteString(result)
 	file.WriteString("\n")
 }
+
+```
+
+## Inspired
+
+https://github.com/ffpojo/ffpojo

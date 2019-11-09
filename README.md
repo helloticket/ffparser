@@ -1,12 +1,15 @@
 # ffparser
+
 The library is a Flat-File Parser
 
 ## Install
+
 ```bash
-go get -v github.com/helderfarias/ffparser
+go get -v github.com/helloticket/ffparser
 ```
 
 ## Using
+
 ```go
 package main
 
@@ -14,7 +17,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/helderfarias/ffparser"
+	"github.com/helloticket/ffparser"
 )
 
 type Pojo struct {
@@ -40,8 +43,6 @@ func main() {
 }
 ```
 
-
 ## Inspired
+
 https://github.com/ffpojo/ffpojo
-
-
