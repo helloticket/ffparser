@@ -5,7 +5,7 @@ import (
 
 	"os"
 
-	"github.com/helderfarias/ffparser"
+	"github.com/helloticket/ffparser"
 )
 
 // HeaderBancoBrasil Registro Header de Arquivo-Remessa
@@ -107,16 +107,16 @@ func main() {
 		IdentificacaoPorExtensoTipoOperacao: "REMESSA",
 		TipoServico:                         1,
 		IdentificacaoPorExtensoTipoServico:  "COBRANCA",
-		Agencia:                 5140,
-		DigitoAgencia:           "1",
-		ContaCorrente:           51445,
-		DigitoContaCorrente:     "6",
-		NomeCedente:             "EMPRESA",
-		UsoExclusivoBancoBrasil: "001BANCODOBRASIL",
-		DataGeracao:             time.Now(),
-		SequencialRemessa:       1,
-		NumeroConvenioLider:     1115292,
-		SequencialRegistro:      1,
+		Agencia:                             5140,
+		DigitoAgencia:                       "1",
+		ContaCorrente:                       51445,
+		DigitoContaCorrente:                 "6",
+		NomeCedente:                         "EMPRESA",
+		UsoExclusivoBancoBrasil:             "001BANCODOBRASIL",
+		DataGeracao:                         time.Now(),
+		SequencialRemessa:                   1,
+		NumeroConvenioLider:                 1115292,
+		SequencialRegistro:                  1,
 	}
 
 	detalhe7 := SegmentoDetalheSete{

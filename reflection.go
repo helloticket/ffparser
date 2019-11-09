@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func GetField(obj interface{}, name string) (interface{}, error) {
+func getField(obj interface{}, name string) (interface{}, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return nil, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -20,7 +20,7 @@ func GetField(obj interface{}, name string) (interface{}, error) {
 	return field.Interface(), nil
 }
 
-func GetFieldKind(obj interface{}, name string) (reflect.Kind, error) {
+func getFieldKind(obj interface{}, name string) (reflect.Kind, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return reflect.Invalid, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -35,7 +35,7 @@ func GetFieldKind(obj interface{}, name string) (reflect.Kind, error) {
 	return field.Type().Kind(), nil
 }
 
-func GetFieldTag(obj interface{}, fieldName, tagKey string) (string, error) {
+func getFieldTag(obj interface{}, fieldName, tagKey string) (string, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return "", errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -55,7 +55,7 @@ func GetFieldTag(obj interface{}, fieldName, tagKey string) (string, error) {
 	return field.Tag.Get(tagKey), nil
 }
 
-func SetField(obj interface{}, name string, value interface{}) error {
+func setField(obj interface{}, name string, value interface{}) error {
 	// Fetch the field reflect.Value
 	structValue := reflect.ValueOf(obj).Elem()
 
@@ -85,7 +85,7 @@ func SetField(obj interface{}, name string, value interface{}) error {
 	return nil
 }
 
-func HasField(obj interface{}, name string) (bool, error) {
+func hasField(obj interface{}, name string) (bool, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return false, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -100,7 +100,7 @@ func HasField(obj interface{}, name string) (bool, error) {
 	return true, nil
 }
 
-func Fields(obj interface{}) ([]string, error) {
+func fields(obj interface{}) ([]string, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return nil, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -120,7 +120,7 @@ func Fields(obj interface{}) ([]string, error) {
 	return fields, nil
 }
 
-func Items(obj interface{}) (map[string]interface{}, error) {
+func items(obj interface{}) (map[string]interface{}, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return nil, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -145,7 +145,7 @@ func Items(obj interface{}) (map[string]interface{}, error) {
 	return items, nil
 }
 
-func Tags(obj interface{}, key string) (map[string]string, error) {
+func tags(obj interface{}, key string) (map[string]string, error) {
 	if !hasValidType(obj, []reflect.Kind{reflect.Struct, reflect.Ptr}) {
 		return nil, errors.New("Cannot use GetField on a non-struct interface")
 	}
@@ -193,10 +193,10 @@ func hasValidType(obj interface{}, types []reflect.Kind) bool {
 	return false
 }
 
-func IsStruct(obj interface{}) bool {
+func isStruct(obj interface{}) bool {
 	return reflect.TypeOf(obj).Kind() == reflect.Struct
 }
 
-func IsPointer(obj interface{}) bool {
+func isPointer(obj interface{}) bool {
 	return reflect.TypeOf(obj).Kind() == reflect.Ptr
 }

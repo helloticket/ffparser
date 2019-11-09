@@ -2,8 +2,6 @@ package ffparser
 
 import (
 	"reflect"
-
-	"github.com/helderfarias/ffparser/helper"
 )
 
 type RecordField struct {
@@ -25,7 +23,7 @@ func (a RecordFieldSorted) Less(i, j int) bool { return a[i].Start < a[j].Start 
 
 func (r *RecordField) ApplyFormat(value string) (string, error) {
 	if r.PaddingAlign == "" && r.PaddingChar == "" && r.isNumericField() {
-		return helper.LeftPadToLen(value, "0", r.Size), nil
+		return leftPadToLen(value, "0", r.Size), nil
 	}
 
 	paddingCharacter := " "
@@ -34,10 +32,10 @@ func (r *RecordField) ApplyFormat(value string) (string, error) {
 	}
 
 	if r.PaddingAlign == "left" {
-		return helper.LeftPadToLen(value, paddingCharacter, r.Size), nil
+		return leftPadToLen(value, paddingCharacter, r.Size), nil
 	}
 
-	return helper.RightPadToLen(value, paddingCharacter, r.Size), nil
+	return rightPadToLen(value, paddingCharacter, r.Size), nil
 }
 
 func (r *RecordField) isNumericField() bool {

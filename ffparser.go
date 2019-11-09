@@ -9,8 +9,7 @@ import (
 
 	"time"
 
-	"github.com/helderfarias/ffparser/decorator"
-	"github.com/helderfarias/ffparser/helper"
+	"github.com/helloticket/ffparser/decorator"
 )
 
 //FFParser flat file parser
@@ -32,7 +31,7 @@ func NewSimpleParser() *FFParser {
 }
 
 func (f *FFParser) ParseToText(src interface{}) (string, error) {
-	mapFields, _ := Tags(src, "record")
+	mapFields, _ := tags(src, "record")
 	if len(mapFields) <= 0 {
 		return "", fmt.Errorf("Could not fields public")
 	}
@@ -41,7 +40,7 @@ func (f *FFParser) ParseToText(src interface{}) (string, error) {
 	recordsField, _ := f.handlerRecordFieldsAndSort(src, mapFields)
 
 	for _, record := range recordsField {
-		content, err := GetField(src, record.FieldName)
+		content, err := getField(src, record.FieldName)
 		if err != nil {
 			return "", err
 		}
@@ -68,7 +67,7 @@ func (f *FFParser) ParseToText(src interface{}) (string, error) {
 }
 
 func (f *FFParser) CreateFromText(src interface{}, text string) error {
-	mapFields, _ := Tags(src, "record")
+	mapFields, _ := tags(src, "record")
 	if len(mapFields) <= 0 {
 		return fmt.Errorf("Could not fields public")
 	}
@@ -86,7 +85,7 @@ func (f *FFParser) CreateFromText(src interface{}, text string) error {
 			return err
 		}
 
-		if err := SetField(src, record.FieldName, value); err != nil {
+		if err := setField(src, record.FieldName, value); err != nil {
 			return err
 		}
 	}
@@ -151,13 +150,13 @@ func (f *FFParser) handlerRecordFieldsAndSort(src interface{}, fields map[string
 		}
 
 		tags := f.mapperTags(tagName)
-		start := helper.ToInteger(tags["start"]) - 1
-		end := helper.ToInteger(tags["end"])
+		start := toInteger(tags["start"]) - 1
+		end := toInteger(tags["end"])
 		size := (end - start)
 		decorator := tags["decorator"]
 		padChar := ""
 		padAlign := ""
-		fieldType, _ := GetFieldKind(src, fieldName)
+		fieldType, _ := getFieldKind(src, fieldName)
 
 		if tags["padchar"] != "" {
 			padChar = tags["padchar"]
