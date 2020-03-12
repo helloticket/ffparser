@@ -11,7 +11,7 @@ type BrazilMoneyDecorator struct {
 
 func (i *BrazilMoneyDecorator) ToString(field interface{}) (string, error) {
 	if value, ok := field.(float64); ok {
-		src := helper.Float64ToString(value)
+		src := helper.Float64ToString(float64(int(value * 100)))
 		return strings.Replace(src, ".", "", -1), nil
 	}
 
