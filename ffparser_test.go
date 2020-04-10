@@ -28,6 +28,7 @@ type TestDecorator1 struct {
 	NumFloat64   float64   `record:"start=11,end=25,decorator=BrazilMoneyDecorator"`
 	NumFloat64_2 float64   `record:"start=26,end=40,decorator=BrazilMoneyDecorator"`
 	DataHora     time.Time `record:"start=41,end=54,decorator=DateTimeDecorator"`
+	DataHoraBR   time.Time `record:"start=55,end=62,decorator=BrazilDateDecorator"`
 }
 
 func TestShouldParseTextToStructWithAutoDetectFieldType(t *testing.T) {
@@ -81,5 +82,5 @@ func TestShouldParseTextToStructWithAutoDetectFieldTypeAndDecorators(t *testing.
 		DataHora:     time.Date(2020, 3, 31, 18, 55, 2, 0, time.UTC),
 	})
 
-	assert.Equal(t, "000011240200000000001785000000000001670031032020185502", result)
+	assert.Equal(t, "00001124020000000000178500000000000167003103202018550200000000", result)
 }

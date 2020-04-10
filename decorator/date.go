@@ -23,7 +23,11 @@ type BrazilSmallDateDecorator struct {
 
 func (i *BrazilDateDecorator) ToString(field interface{}) (string, error) {
 	if value, ok := field.(time.Time); ok {
-		return value.Format(DDMMYYYY), nil
+		strValue := value.Format(DDMMYYYY)
+		if strValue == "01010001" { // Quando a data não é informada o time.Time inicializa com 01/01/0001
+			strValue = "00000000"
+		}
+		return strValue, nil
 	}
 	return "", nil
 }
@@ -38,7 +42,11 @@ func (i *BrazilSmallDateDecorator) FromString(field string) (interface{}, error)
 
 func (i *BrazilSmallDateDecorator) ToString(field interface{}) (string, error) {
 	if value, ok := field.(time.Time); ok {
-		return value.Format(DDMMYY), nil
+		strValue := value.Format(DDMMYY)
+		if strValue == "010101" { // Quando a data não é informada o time.Time inicializa com 01/01/0001
+			strValue = "000000"
+		}
+		return strValue, nil
 	}
 	return "", nil
 }
