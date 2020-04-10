@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/prometheus/common/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,6 +50,24 @@ func TestShouldParseTextToStructWithAutoDetectFieldType(t *testing.T) {
 	})
 
 	assert.Equal(t, "10/05/2017 00:00:00  000000124020000004567804567833.22be happy   ", result)
+}
+
+func TestShouldCreateFromTextToStructWithAutoDetectFieldType(t *testing.T) {
+	textoParaConversao := "be happy  "
+	parser := NewSimpleParser()
+
+	type AutoDetectStruct struct {
+		Value string `record:"start=1,end=10"`
+	}
+
+	var objeto AutoDetectStruct
+	err := parser.CreateFromText(&objeto, textoParaConversao)
+
+	if err != nil {
+		log.Errorf("Erro encontrado: %v", err)
+	}
+
+	assert.Equal(t, "be happy", objeto.Value)
 }
 
 func TestShouldParseTextToStructWithAutoDetectFieldTypeAndDecorators(t *testing.T) {

@@ -80,7 +80,7 @@ func (f *FFParser) CreateFromText(src interface{}, text string) error {
 			return err
 		}
 
-		value, err := decorator.FromString(text[record.Start:record.End])
+		value, err := decorator.FromString(strings.TrimSpace(text[record.Start:record.End]))
 		if err != nil {
 			return err
 		}
