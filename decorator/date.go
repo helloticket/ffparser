@@ -21,6 +21,14 @@ type BrazilDateDecorator struct {
 type BrazilSmallDateDecorator struct {
 }
 
+func (i *BrazilDateDecorator) FromString(field string) (interface{}, error) {
+	value, err := time.Parse(DDMMYYYY, field)
+	if err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
 func (i *BrazilDateDecorator) ToString(field interface{}) (string, error) {
 	if value, ok := field.(time.Time); ok {
 		strValue := value.Format(DDMMYYYY)
@@ -49,14 +57,6 @@ func (i *BrazilSmallDateDecorator) ToString(field interface{}) (string, error) {
 		return strValue, nil
 	}
 	return "", nil
-}
-
-func (i *BrazilDateDecorator) FromString(field string) (interface{}, error) {
-	value, err := time.Parse(DDMMYY, field)
-	if err != nil {
-		return nil, err
-	}
-	return value, nil
 }
 
 // func (i *DateTimeDecorator) ToString(field interface{}) (string, error) {
