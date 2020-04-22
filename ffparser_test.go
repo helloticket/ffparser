@@ -93,9 +93,12 @@ func TestShouldCreateFromTextAutoDetectFieldTypeAndDecorators(t *testing.T) {
 
 	dataHoraEsperada := time.Date(2020, 3, 31, 18, 55, 2, 0, time.UTC)
 
+	var dataBrEsperada time.Time
+
 	assert.Equal(t, 1, estrutura.NumInt)
 	assert.Equal(t, int64(12402), estrutura.NumInt64)
 	assert.Equal(t, 178.5, estrutura.NumFloat64)
 	assert.Equal(t, 167.0, estrutura.NumFloat64_2)
 	assert.Equal(t, dataHoraEsperada.String(), estrutura.DataHora.String())
+	assert.Equal(t, dataBrEsperada, estrutura.DataHoraBR)
 }

@@ -22,6 +22,11 @@ type BrazilSmallDateDecorator struct {
 }
 
 func (i *BrazilDateDecorator) FromString(field string) (interface{}, error) {
+	if field == "00000000" {
+		var value time.Time
+		return value, nil
+	}
+
 	value, err := time.Parse(DDMMYYYY, field)
 	if err != nil {
 		return nil, err
