@@ -84,3 +84,18 @@ func TestShouldParseTextToStructWithAutoDetectFieldTypeAndDecorators(t *testing.
 
 	assert.Equal(t, "00001124020000000000178500000000000167003103202018550200000000", result)
 }
+
+func TestShouldCreateFromTextAutoDetectFieldTypeAndDecorators(t *testing.T) {
+	texto := "00001124020000000000178500000000000167003103202018550200000000"
+	var estrutura TestDecorator1
+	parser := NewSimpleParser()
+	parser.CreateFromText(&estrutura, texto)
+
+	dataHoraEsperada := time.Date(2020, 3, 31, 18, 55, 2, 0, time.UTC)
+
+	assert.Equal(t, 1, estrutura.NumInt)
+	assert.Equal(t, int64(12402), estrutura.NumInt64)
+	assert.Equal(t, 178.5, estrutura.NumFloat64)
+	assert.Equal(t, 167.0, estrutura.NumFloat64_2)
+	assert.Equal(t, dataHoraEsperada.String(), estrutura.DataHora.String())
+}

@@ -81,7 +81,7 @@ func (i *DateTimeDecorator) FromString(field string) (interface{}, error) {
 	hour, _ := strconv.Atoi(field[8:10])
 	minutes, _ := strconv.Atoi(field[10:12])
 	seconds, _ := strconv.Atoi(field[12:])
-	value := time.Date(year, time.Month(month-1), day, hour, minutes, seconds, 0, time.UTC)
+	value := time.Date(year, time.Month(month), day, hour, minutes, seconds, 0, time.UTC)
 	return value, nil
 }
 

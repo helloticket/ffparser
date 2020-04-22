@@ -1,6 +1,7 @@
 package decorator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/helderfarias/ffparser/helper"
@@ -19,7 +20,8 @@ func (i *BrazilMoneyDecorator) ToString(field interface{}) (string, error) {
 }
 
 func (i *BrazilMoneyDecorator) FromString(field string) (interface{}, error) {
-	value := strings.Replace(field, ".", "", -1)
-	value = strings.Replace(value, ",", ".", -1)
+	decimalPart := field[len(field)-2:]
+	integerPart := field[:len(field)-2]
+	value := fmt.Sprintf("%s.%s", integerPart, decimalPart)
 	return helper.ToFloat64(value), nil
 }
