@@ -102,3 +102,39 @@ func TestShouldCreateFromTextAutoDetectFieldTypeAndDecorators(t *testing.T) {
 	assert.Equal(t, dataHoraEsperada.String(), estrutura.DataHora.String())
 	assert.Equal(t, dataBrEsperada, estrutura.DataHoraBR)
 }
+
+func TestShouldCreateFromTextAutoDetectFieldTypeAndDecoratorsBlankStrings(t *testing.T) {
+	texto := "0000112402                                                    "
+	var estrutura TestDecorator1
+	parser := NewSimpleParser()
+	parser.CreateFromText(&estrutura, texto)
+
+	var dataHoraEsperada time.Time
+
+	var dataBrEsperada time.Time
+
+	assert.Equal(t, 1, estrutura.NumInt)
+	assert.Equal(t, int64(12402), estrutura.NumInt64)
+	assert.Equal(t, 0.0, estrutura.NumFloat64)
+	assert.Equal(t, 0.0, estrutura.NumFloat64_2)
+	assert.Equal(t, dataHoraEsperada, estrutura.DataHora)
+	assert.Equal(t, dataBrEsperada, estrutura.DataHoraBR)
+}
+
+func TestShouldCreateFromTextAutoDetectFieldTypeAndDecoratorsZeros(t *testing.T) {
+	texto := "00000000000000000000000000000000000000000000000000000000000000"
+	var estrutura TestDecorator1
+	parser := NewSimpleParser()
+	parser.CreateFromText(&estrutura, texto)
+
+	var dataHoraEsperada time.Time
+
+	var dataBrEsperada time.Time
+
+	assert.Equal(t, 0, estrutura.NumInt)
+	assert.Equal(t, int64(0), estrutura.NumInt64)
+	assert.Equal(t, float64(0.0), estrutura.NumFloat64)
+	assert.Equal(t, float64(0.0), estrutura.NumFloat64_2)
+	assert.Equal(t, dataHoraEsperada, estrutura.DataHora)
+	assert.Equal(t, dataBrEsperada, estrutura.DataHoraBR)
+}
