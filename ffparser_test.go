@@ -50,7 +50,7 @@ func TestShouldParseTextToStructWithAutoDetectFieldType(t *testing.T) {
 		Value5: "be happy",
 	})
 
-	assert.Equal(t, "10/05/2017 00:00:00  000000124020000004567804567833.22be happy   ", result)
+	assert.Equal(t, "10052017000000       000000124020000004567804567833.22be happy   ", result)
 }
 
 func TestShouldCreateFromTextToStructWithAutoDetectFieldType(t *testing.T) {
@@ -76,13 +76,13 @@ func TestShouldParseTextToStructWithAutoDetectFieldTypeAndDecorators(t *testing.
 
 	result, _ := parser.ParseToText(&TestDecorator1{
 		NumInt:       1,
-		NumInt64:     int64(12402),
+		NumInt64:     int64(402),
 		NumFloat64:   178.5,
 		NumFloat64_2: 167.0,
 		DataHora:     time.Date(2020, 3, 31, 18, 55, 2, 0, time.UTC),
 	})
 
-	assert.Equal(t, "00001124020000000000178500000000000167003103202018550200000000", result)
+	assert.Equal(t, "00001004020000000000178500000000000167003103202018550200000000", result)
 }
 
 func TestShouldCreateFromTextAutoDetectFieldTypeAndDecorators(t *testing.T) {

@@ -3,7 +3,7 @@ package decorator
 import (
 	"fmt"
 
-	"github.com/helderfarias/ffparser/helper"
+	"github.com/helloticket/ffparser/helper"
 )
 
 type IntDecorator struct {
