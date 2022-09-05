@@ -4,7 +4,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prometheus/common/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -64,10 +63,7 @@ func TestShouldCreateFromTextToStructWithAutoDetectFieldType(t *testing.T) {
 	var objeto AutoDetectStruct
 	err := parser.CreateFromText(&objeto, textoParaConversao)
 
-	if err != nil {
-		log.Errorf("Erro encontrado: %v", err)
-	}
-
+	assert.Nil(t, err)
 	assert.Equal(t, "be happy", objeto.Value)
 }
 
